@@ -24,4 +24,6 @@ jobs:
           make install
       - name: Run linter and pytest
         run: |
-          make lint
+          make lint       
+          env:
+            CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
