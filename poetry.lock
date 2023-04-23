@@ -100,6 +100,20 @@ files = [
 ]
 
 [[package]]
+name = "jinja"
+version = "1.2"
+description = "A small but fast and easy to use stand-alone template engine written in pure python."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Jinja-1.2.tar.gz", hash = "sha256:36252f3d0356008a31a537a31cfba189f7b5898b8e2da454f72ea5f987db8b31"},
+]
+
+[package.extras]
+plugin = ["setuptools (>=0.6a2)"]
+
+[[package]]
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
@@ -251,4 +265,4 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "e78e4b89034bb19a1558418ac3988bd79ab1ded0141d02b4b20d0cc6acdee49a"
+content-hash = "27138ba0c484b6084087829f368562e29df83376edd2493f1f0ab357bcb4e47a"
