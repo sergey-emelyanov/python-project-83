@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block h1 %}Сайты{% endblock %}
+{% block content %}
+
+<div class="table-responsive">
+  <table class="table table-bordered table-hover text-nowrap" data-test="urls">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Имя</th>
+      <th>Последняя проверка</th>
+      <th>Код ответа</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for url in urls %}
+    <tr>
+      <th>{{url[0]}}</th>
+      <th><a href="{{ url_for('show_one', id=url[0])}}">{{url[1]}}</a></th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}
