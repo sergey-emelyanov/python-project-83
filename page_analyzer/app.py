@@ -1,15 +1,13 @@
 import os
 import psycopg2
 from datetime import date
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 from dotenv import load_dotenv
+from page_analyzer.validation import validate
 
 app = Flask(__name__)
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
-
-conn = psycopg2.connect(DATABASE_URL)
-cur = conn.cursor()
 
 
 def get_db_connection():
@@ -19,7 +17,8 @@ def get_db_connection():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    url = ''
+    return render_template('index.html', url=url)
 
 
 @app.post('/urls')
@@ -27,9 +26,9 @@ def post_urls():
     conn = get_db_connection()
     url = request.form['url']
     current_date = date.today()
-    validation = ''
-    if not validation:
-        return render_template('index.html')
+    errors = validate(url)
+    if errors:
+        return render_template('index.html', url=url)
     cur = conn.cursor()
     cur.execute('INSERT INTO urls(name,created_at)'
                 'VALUES(%s,%s)',
@@ -38,7 +37,7 @@ def post_urls():
     conn.commit()
     cur.close()
     conn.close()
-    return url_for('show_urls')
+    return redirect(url_for('show_urls'))
 
 
 @app.route('/urls')
@@ -61,5 +60,3 @@ def show_one(id):
     cur.close()
     conn.close()
     return render_template('show_one.html', url=url)
-
-
