@@ -1,6 +1,6 @@
 import os
 import psycopg2
-import datetime
+from datetime import date
 from flask import Flask, render_template, request, url_for
 from dotenv import load_dotenv
 
@@ -22,20 +22,23 @@ def index():
     return render_template('index.html')
 
 
-@app.post('/')
+@app.post('/urls')
 def post_urls():
     conn = get_db_connection()
     url = request.form['url']
-    date = datetime.date.today()
+    current_date = date.today()
+    validation = ''
+    if not validation:
+        return render_template('index.html')
     cur = conn.cursor()
     cur.execute('INSERT INTO urls(name,created_at)'
                 'VALUES(%s,%s)',
-                (url, date)
+                (url, current_date)
                 )
     conn.commit()
     cur.close()
     conn.close()
-    return url_for('index')
+    return url_for('show_urls')
 
 
 @app.route('/urls')
