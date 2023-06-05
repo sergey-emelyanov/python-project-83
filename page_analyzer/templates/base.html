@@ -21,6 +21,12 @@
 
   </header>
 
+  {% if messages %}
+{% for message in messages %}
+  {{ message[1] }}
+{% endfor %}
+{% endif %}
+
 
   <main class="flex-grow-1">
     <div class="container-lg mt-3">

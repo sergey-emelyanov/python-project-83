@@ -1,14 +1,14 @@
 import os
 import psycopg2
 from datetime import date
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash, get_flashed_messages
 from dotenv import load_dotenv
 from page_analyzer.validation import validate
 
 app = Flask(__name__)
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
-
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
@@ -37,6 +37,7 @@ def post_urls():
     conn.commit()
     cur.close()
     conn.close()
+    flash('Страница успешно добавлена', 'success')
     return redirect(url_for('show_urls'))
 
 
@@ -48,7 +49,9 @@ def show_urls():
     urls = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template('show_all.html', urls=urls)
+    messages = get_flashed_messages(with_categories=True)
+    print(messages)
+    return render_template('show_all.html', urls=urls ,messages=messages)
 
 
 @app.route('/urls/<int:id>')
