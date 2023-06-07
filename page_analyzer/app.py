@@ -28,7 +28,8 @@ def post_urls():
     current_date = date.today()
     errors = validate(url)
     if errors:
-        return render_template('index.html', url=url)
+        print(errors)
+        return render_template('index.html', url=url, errors=errors)
     cur = conn.cursor()
     cur.execute('INSERT INTO urls(name,created_at)'
                 'VALUES(%s,%s)',
@@ -50,8 +51,7 @@ def show_urls():
     cur.close()
     conn.close()
     messages = get_flashed_messages(with_categories=True)
-    print(messages)
-    return render_template('show_all.html', urls=urls ,messages=messages)
+    return render_template('show_all.html', urls=urls, messages=messages)
 
 
 @app.route('/urls/<int:id>')
