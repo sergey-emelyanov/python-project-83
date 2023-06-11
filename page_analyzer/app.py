@@ -3,6 +3,7 @@ import psycopg2
 from datetime import date
 from flask import Flask, render_template, request, url_for, redirect, flash, get_flashed_messages
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 from page_analyzer.validation import validate
 
 app = Flask(__name__)
@@ -28,12 +29,12 @@ def post_urls():
     current_date = date.today()
     errors = validate(url)
     if errors:
-        print(errors)
         return render_template('index.html', url=url, errors=errors)
+    pure_url = urlparse(url).scheme + "://" + urlparse(url).netloc
     cur = conn.cursor()
     cur.execute('INSERT INTO urls(name,created_at)'
                 'VALUES(%s,%s)',
-                (url, current_date)
+                (pure_url, current_date)
                 )
     conn.commit()
     cur.close()
