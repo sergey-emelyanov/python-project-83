@@ -1,15 +1,4 @@
-import os
-import psycopg2
-from dotenv import load_dotenv
 from psycopg2.extras import NamedTupleCursor
-# load_dotenv()
-# DATABASE_URL = os.getenv('DATABASE_URL')
-#
-# conn = psycopg2.connect(DATABASE_URL)
-# with conn.cursor() as cur:
-#     cur.execute('TRUNCATE TABLE urls RESTART IDENTITY;')
-
-
 
 
 def get_id(f, valid_url):
