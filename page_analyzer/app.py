@@ -32,12 +32,13 @@ def post_urls():
     current_date = date.today()
     errors = validate(url)
     if errors:
+        for error in errors:
+            flash(error, 'danger')
         return render_template('index.html', url=url, errors=errors)
     valid_url = urlparse(url).scheme + "://" + urlparse(url).netloc
     result = get_name(get_db_connection,valid_url)
     if result:
         flash('Страница уже существует', 'info')
-        print('Страница уже существует')
         return redirect(url_for('show_one', id=result.id))
     insert_into(get_db_connection, valid_url, current_date)
     url_id = get_id(get_db_connection, valid_url)
@@ -48,8 +49,7 @@ def post_urls():
 @app.route('/urls')
 def show_all():
     urls = take_all(get_db_connection)
-    messages = get_flashed_messages(with_categories=True)
-    return render_template('show_all.html', urls=urls, messages=messages)
+    return render_template('show_all.html', urls=urls)
 
 
 @app.route('/urls/<int:id>')
