@@ -1,4 +1,8 @@
 from psycopg2.extras import NamedTupleCursor
+import datetime
+
+
+
 
 
 def get_id(f, valid_url):

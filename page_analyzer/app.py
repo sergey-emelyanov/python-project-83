@@ -13,8 +13,6 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
-
-
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
     return conn
@@ -36,7 +34,7 @@ def post_urls():
             flash(error, 'danger')
         return render_template('index.html', url=url, errors=errors)
     valid_url = urlparse(url).scheme + "://" + urlparse(url).netloc
-    result = get_name(get_db_connection,valid_url)
+    result = get_name(get_db_connection, valid_url)
     if result:
         flash('Страница уже существует', 'info')
         return redirect(url_for('show_one', id=result.id))
@@ -55,4 +53,6 @@ def show_all():
 @app.route('/urls/<int:id>')
 def show_one(id):
     url = take_one(get_db_connection, id)
-    return render_template('show_one.html', url=url)
+    name = url.name
+    date_of_insert = url.created_at
+    return render_template('show_one.html', id=id, name=name, date_of_insert=date_of_insert.date())

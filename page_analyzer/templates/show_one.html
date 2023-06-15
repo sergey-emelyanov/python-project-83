@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block h1 %}Сайт:{{url[1]}} {% endblock %}
+{% block h1 %}Сайт:{{name}} {% endblock %}
 {% block content %}
 
   <div class="table-responsive">
@@ -8,15 +8,15 @@
       <tbody>
         <tr>
           <td>ID</td>
-          <td>{{url[0]}}</td>
+          <td>{{id}}</td>
         </tr>
         <tr>
           <td>Имя</td>
-          <td>{{url[1]}}</td>
+          <td>{{name}}</td>
         </tr>
         <tr>
           <td>Дата создания</td>
-          <td>{{url[2]}}</td>
+          <td>{{date_of_insert}}</td>
         </tr>
       </tbody>
     </table>
