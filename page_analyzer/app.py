@@ -18,6 +18,7 @@ def get_db_connection():
     return conn
 
 
+
 @app.route('/')
 def index():
     url = ''
