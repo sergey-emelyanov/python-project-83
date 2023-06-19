@@ -43,3 +43,22 @@ def get_name(f, valid_url):
             url = cur.fetchone()
 
     return url
+
+
+def insert_into_checks(f, url_id, current_date):
+    with f() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+            INSERT INTO url_checks(url_id,created_at)
+            VALUES(%s, %s)""", (url_id, current_date))
+
+
+def take_from_checks(f,url_id):
+    with f() as conn:
+        with conn.cursor(cursor_factory=NamedTupleCursor) as cur:
+            cur.execute(
+                'SELECT * FROM url_checks WHERE url_id=%s', [url_id]
+            )
+            checks = cur.fetchall()
+
+    return checks

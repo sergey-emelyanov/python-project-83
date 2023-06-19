@@ -5,7 +5,8 @@ from flask import Flask, render_template, request, url_for, redirect, flash, get
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 from page_analyzer.validation import validate
-from page_analyzer.db_actions import get_id, insert_into, take_all, take_one, get_name
+from page_analyzer.db_actions import get_id, insert_into, take_all, take_one, get_name, insert_into_checks, \
+    take_from_checks
 
 app = Flask(__name__)
 load_dotenv()
@@ -16,7 +17,6 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
     return conn
-
 
 
 @app.route('/')
@@ -56,4 +56,13 @@ def show_one(id):
     url = take_one(get_db_connection, id)
     name = url.name
     date_of_insert = url.created_at
-    return render_template('show_one.html', id=id, name=name, date_of_insert=date_of_insert.date())
+    checks = take_from_checks(get_db_connection, id)
+    print(checks)
+    return render_template('show_one.html', id=id, name=name, date_of_insert=date_of_insert.date(), checks=checks)
+
+
+@app.post('/urls/<int:id>/checks')
+def check_url(id):
+    current_date = date.today()
+    insert_into_checks(get_db_connection, id, current_date)
+    return redirect(url_for('show_one', id=id))
