@@ -48,6 +48,7 @@ def post_urls():
 @app.route('/urls')
 def show_all():
     urls = take_all(get_db_connection)
+
     return render_template('show_all.html', urls=urls)
 
 
@@ -57,7 +58,6 @@ def show_one(id):
     name = url.name
     date_of_insert = url.created_at
     checks = take_from_checks(get_db_connection, id)
-    print(checks)
     return render_template('show_one.html', id=id, name=name, date_of_insert=date_of_insert.date(), checks=checks)
 
 
