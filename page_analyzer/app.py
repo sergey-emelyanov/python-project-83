@@ -1,5 +1,7 @@
 import os
 import psycopg2
+import requests
+from requests import ConnectionError, HTTPError
 from datetime import date
 from flask import Flask, render_template, request, url_for, redirect, flash, get_flashed_messages
 from dotenv import load_dotenv
@@ -48,21 +50,26 @@ def post_urls():
 @app.route('/urls')
 def show_all():
     urls = take_all(get_db_connection)
-
     return render_template('show_all.html', urls=urls)
 
 
 @app.route('/urls/<int:id>')
 def show_one(id):
     url = take_one(get_db_connection, id)
-    name = url.name
-    date_of_insert = url.created_at
     checks = take_from_checks(get_db_connection, id)
-    return render_template('show_one.html', id=id, name=name, date_of_insert=date_of_insert.date(), checks=checks)
+    return render_template('show_one.html', url=url, checks=checks)
 
 
 @app.post('/urls/<int:id>/checks')
 def check_url(id):
+    url = take_one(get_db_connection, id)
+    try:
+        response = requests.get(url.name)
+        response.raise_for_status()
+    except(ConnectionError, HTTPError):
+        flash('Произошла ошибка при проверке', 'danger')
+        return redirect(url_for('show_one', id=id))
+    status_code = requests.get(url.name).status_code
     current_date = date.today()
-    insert_into_checks(get_db_connection, id, current_date)
+    insert_into_checks(get_db_connection, id, current_date, status_code)
     return redirect(url_for('show_one', id=id))

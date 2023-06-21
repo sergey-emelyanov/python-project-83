@@ -8,22 +8,22 @@
       <tbody>
         <tr>
           <td>ID</td>
-          <td>{{id}}</td>
+          <td>{{url.id}}</td>
         </tr>
         <tr>
           <td>Имя</td>
-          <td>{{name}}</td>
+          <td>{{url.name}}</td>
         </tr>
         <tr>
           <td>Дата создания</td>
-          <td>{{date_of_insert}}</td>
+          <td>{{url.created_at}}</td>
         </tr>
       </tbody>
     </table>
   </div>
 
     <h2 class="mt-5 mb-3">Проверки</h2>
-    <form method="post" action="/urls/{{ id }}/checks">
+    <form method="post" action="/urls/{{ url.id }}/checks">
     <input type="submit" class="btn btn-primary" value="Запустить проверку">
     </form>
 
@@ -44,12 +44,12 @@
       <tbody>
     {% for check in checks %}
     <tr>
-        <td>{{ check[0] }}</td>
+        <td>{{ check.id }}</td>
+        <td>{{ check.status_code }}</td>
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td>{{ check[6] }}</td>
+        <td>{{ check.created_at }}</td>
     </tr>
 
 
