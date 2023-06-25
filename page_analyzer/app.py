@@ -8,8 +8,9 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 from page_analyzer.validation import validate
 from page_analyzer.page_content import get_data
-from page_analyzer.db_actions import get_id, insert_into, take_all, take_one, get_name, insert_into_checks, \
-    take_from_checks
+from page_analyzer.db_actions import (get_id, insert_into, take_all,
+                                      take_one, get_name, insert_into_checks,
+                                      take_from_checks)
 
 app = Flask(__name__)
 load_dotenv()
@@ -36,7 +37,7 @@ def post_urls():
     if errors:
         for error in errors:
             flash(error, 'danger')
-        return render_template('index.html', url=url, errors=errors),422
+        return render_template('index.html', url=url, errors=errors), 422
     valid_url = urlparse(url).scheme + "://" + urlparse(url).netloc
     result = get_name(get_db_connection, valid_url)
     if result:
@@ -67,12 +68,13 @@ def check_url(id):
     try:
         response = requests.get(url.name)
         response.raise_for_status()
-    except(ConnectionError, HTTPError):
+    except (ConnectionError, HTTPError):
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('show_one', id=id))
     h1, title, content = get_data(url.name)
     status_code = requests.get(url.name).status_code
     current_date = date.today()
-    insert_into_checks(get_db_connection, id, current_date, status_code, h1, title, content)
+    insert_into_checks(get_db_connection, id, current_date,
+                       status_code, h1, title, content)
     flash("Страница успешно проверена", "success")
     return redirect(url_for('show_one', id=id))

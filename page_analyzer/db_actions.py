@@ -40,7 +40,6 @@ def take_one(f, id):
         with conn.cursor(cursor_factory=NamedTupleCursor) as cur:
             cur.execute('SELECT * FROM urls WHERE id=%s', [id])
             url = cur.fetchone()
-
     return url
 
 
@@ -53,19 +52,24 @@ def get_name(f, valid_url):
     return url
 
 
-def insert_into_checks(f, url_id, current_date, status_code, h1, title, content):
+def insert_into_checks(f, url_id, current_date,
+                       status_code, h1, title, content):
     with f() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-            INSERT INTO url_checks(url_id,created_at,status_code,h1,title,description)
-            VALUES(%s, %s, %s, %s, %s, %s)""", (url_id, current_date, status_code, h1, title, content))
+            INSERT INTO url_checks
+            (url_id,created_at,status_code,h1,title,description)
+            VALUES(%s, %s, %s, %s, %s, %s)""",
+                        (url_id, current_date, status_code, h1, title, content))
 
 
 def take_from_checks(f, url_id):
     with f() as conn:
         with conn.cursor(cursor_factory=NamedTupleCursor) as cur:
             cur.execute(
-                'SELECT * FROM url_checks WHERE url_id=%s ORDER BY id DESC;', [url_id]
+                """SELECT * FROM url_checks
+                WHERE url_id=%s ORDER BY id DESC;""",
+                [url_id]
             )
             checks = cur.fetchall()
 
