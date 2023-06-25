@@ -36,7 +36,7 @@ def post_urls():
     if errors:
         for error in errors:
             flash(error, 'danger')
-        return render_template('index.html', url=url, errors=errors), 422
+        return render_template('index.html', url=url, errors=errors),422
     valid_url = urlparse(url).scheme + "://" + urlparse(url).netloc
     result = get_name(get_db_connection, valid_url)
     if result:
