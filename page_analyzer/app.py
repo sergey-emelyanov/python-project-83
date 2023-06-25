@@ -3,10 +3,11 @@ import psycopg2
 import requests
 from requests import ConnectionError, HTTPError
 from datetime import date
-from flask import Flask, render_template, request, url_for, redirect, flash, get_flashed_messages
+from flask import Flask, render_template, request, url_for, redirect, flash
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 from page_analyzer.validation import validate
+from page_analyzer.page_content import get_data
 from page_analyzer.db_actions import get_id, insert_into, take_all, take_one, get_name, insert_into_checks, \
     take_from_checks
 
@@ -69,7 +70,9 @@ def check_url(id):
     except(ConnectionError, HTTPError):
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('show_one', id=id))
+    h1, title, content = get_data(url.name)
     status_code = requests.get(url.name).status_code
     current_date = date.today()
-    insert_into_checks(get_db_connection, id, current_date, status_code)
+    insert_into_checks(get_db_connection, id, current_date, status_code, h1, title, content)
+    flash("Страница успешно проверена", "success")
     return redirect(url_for('show_one', id=id))

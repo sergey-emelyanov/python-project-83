@@ -53,12 +53,12 @@ def get_name(f, valid_url):
     return url
 
 
-def insert_into_checks(f, url_id, current_date, status_code):
+def insert_into_checks(f, url_id, current_date, status_code, h1, title, content):
     with f() as conn:
         with conn.cursor() as cur:
             cur.execute("""
-            INSERT INTO url_checks(url_id,created_at,status_code)
-            VALUES(%s, %s, %s)""", (url_id, current_date, status_code))
+            INSERT INTO url_checks(url_id,created_at,status_code,h1,title,description)
+            VALUES(%s, %s, %s, %s, %s, %s)""", (url_id, current_date, status_code, h1, title, content))
 
 
 def take_from_checks(f, url_id):
