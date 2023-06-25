@@ -8,7 +8,7 @@ CREATE TABLE urls (
              created_at DATE);
 
 
-CREATE TABLE url_cheсks (
+CREATE TABLE url_checks (
              id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
              url_id bigint REFERENCES urls(id),
              status_code VARCHAR(255),
