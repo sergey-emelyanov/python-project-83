@@ -4,7 +4,7 @@
 
 ***
 # DESCRIPTION
-web application that allows you to get metadata for seo analysis from a website page
+web application that allows You to get metadata for seo analysis from a website page
 
 
 ***
