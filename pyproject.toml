@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "web application that allows you to get metadata for seo analysis from a website page"
 authors = ["sergey-emelyanov <emelia35@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "page_analyzer"}]
