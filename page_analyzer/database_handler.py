@@ -18,7 +18,7 @@ def insert_into(get_db_connection, valid_url, current_date):
                         (valid_url, current_date))
 
 
-def take_all(get_db_connection):
+def get_all_records(get_db_connection):
     with get_db_connection() as conn:
         with conn.cursor(cursor_factory=NamedTupleCursor) as cur:
             cur.execute("""
@@ -35,7 +35,7 @@ def take_all(get_db_connection):
     return urls
 
 
-def take_one(get_db_connection, id):
+def get_one_record(get_db_connection, id):
     with get_db_connection() as conn:
         with conn.cursor(cursor_factory=NamedTupleCursor) as cur:
             cur.execute('SELECT * FROM urls WHERE id=%s', [id])

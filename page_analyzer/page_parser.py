@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_data(url):
+def parse_data(url):
     response = requests.get(url)
     response.encoding = 'utf-8'
     soup = BeautifulSoup(response.text, 'lxml')
