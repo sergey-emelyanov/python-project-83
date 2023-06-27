@@ -8,8 +8,11 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 from page_analyzer.validation import validate
 from page_analyzer.page_parser import parse_data
-from page_analyzer.database_handler import (get_id, insert_into, get_all_records,
-                                            get_one_record, get_name, insert_into_checks,
+from page_analyzer.database_handler import (get_id, insert_into,
+                                            get_all_records,
+                                            get_one_record,
+                                            get_name,
+                                            insert_into_checks,
                                             take_from_checks)
 
 app = Flask(__name__)
